@@ -1,33 +1,43 @@
-import { Pressable, View, Text, StyleSheet } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { GlobalStyles } from '../../constants/styles';
-import { getFormattedDate } from '../../utils/date';
 
-function ExpenseItem({ id, description, date, amount }) {
+import { GlobalStyles } from '../../constants/styles';
+import { getFormattedDate } from '../../util/date';
+
+function ExpenseItem({ id, description, amount, date }) {
   const navigation = useNavigation();
+
   function expensePressHandler() {
     navigation.navigate('ManageExpense', {
       expenseId: id
     });
   }
-  return <Pressable onPress={expensePressHandler} style={({ pressed }) => pressed && styles.pressed}>
-    <View style={styles.expenseItem}>
-      <View>
-        <Text style={[styles.expenseItem, styles.description]}>{description}</Text>
-        <Text style={styles.textBase}>{getFormattedDate(date)}</Text>
+
+  return (
+    <Pressable
+      onPress={expensePressHandler}
+      style={({ pressed }) => pressed && styles.pressed}
+    >
+      <View style={styles.expenseItem}>
+        <View>
+          <Text style={[styles.textBase, styles.description]}>
+            {description}
+          </Text>
+          <Text style={styles.textBase}>{getFormattedDate(date)}</Text>
+        </View>
+        <View style={styles.amountContainer}>
+          <Text style={styles.amount}>{amount.toFixed(2)}</Text>
+        </View>
       </View>
-      <View style={styles.amountContainer}>
-        <Text style={styles.amount}>${amount}</Text>
-      </View>
-    </View>
-  </Pressable>
+    </Pressable>
+  );
 }
 
 export default ExpenseItem;
 
 const styles = StyleSheet.create({
   pressed: {
-    opacity: 0.75
+    opacity: 0.75,
   },
   expenseItem: {
     padding: 12,
@@ -40,15 +50,15 @@ const styles = StyleSheet.create({
     shadowColor: GlobalStyles.colors.gray500,
     shadowRadius: 4,
     shadowOffset: { width: 1, height: 1 },
-    shadowOpacity: 0.4
+    shadowOpacity: 0.4,
   },
   textBase: {
-    color: GlobalStyles.colors.primary50
+    color: GlobalStyles.colors.primary50,
   },
   description: {
     fontSize: 16,
     marginBottom: 4,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   amountContainer: {
     paddingHorizontal: 12,
@@ -62,5 +72,5 @@ const styles = StyleSheet.create({
   amount: {
     color: GlobalStyles.colors.primary500,
     fontWeight: 'bold',
-  }
+  },
 });

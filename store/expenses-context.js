@@ -1,43 +1,43 @@
-import { createContext, useReducer } from "react";
+import { createContext, useReducer } from 'react';
 
 const DUMMY_EXPENSES = [
   {
     id: 'e1',
     description: 'A pair of shoes',
-    amount: 5.99,
-    date: new Date('2023-12-09')
+    amount: 59.99,
+    date: new Date('2021-12-19'),
   },
   {
     id: 'e2',
-    description: 'A pair of trouses',
+    description: 'A pair of trousers',
     amount: 89.29,
-    date: new Date('2024-01-07')
+    date: new Date('2022-01-05'),
   },
   {
     id: 'e3',
-    description: 'Electricity bill',
-    amount: 129.00,
-    date: new Date('2023-12-28')
+    description: 'Some bananas',
+    amount: 5.99,
+    date: new Date('2021-12-01'),
   },
   {
     id: 'e4',
-    description: 'Car fuel',
-    amount: 30,
-    date: new Date('2024-01-19')
+    description: 'A book',
+    amount: 14.99,
+    date: new Date('2022-02-19'),
   },
   {
     id: 'e5',
-    description: 'Book',
-    amount: 2.66,
-    date: new Date('2024-12-24')
-  },
+    description: 'Another book',
+    amount: 18.59,
+    date: new Date('2022-02-18'),
+  }
 ];
 
 export const ExpensesContext = createContext({
   expenses: [],
   addExpense: ({ description, amount, date }) => { },
   deleteExpense: (id) => { },
-  updateExpense: (id, { description, amount, date }) => { }
+  updateExpense: (id, { description, amount, date }) => { },
 });
 
 function expensesReducer(state, action) {
@@ -52,7 +52,7 @@ function expensesReducer(state, action) {
       const updatableExpense = state[updatableExpenseIndex];
       const updatedItem = { ...updatableExpense, ...action.payload.data };
       const updatedExpenses = [...state];
-      updatableExpense[updatableExpenseIndex] = updatedItem;
+      updatedExpenses[updatableExpenseIndex] = updatedItem;
       return updatedExpenses;
     case 'DELETE':
       return state.filter((expense) => expense.id !== action.payload);
@@ -80,12 +80,14 @@ function ExpensesContextProvider({ children }) {
     expenses: expensesState,
     addExpense: addExpense,
     deleteExpense: deleteExpense,
-    updateExpense: updateExpense
+    updateExpense: updateExpense,
   };
 
-  return <ExpensesContext.Provider value={value}>
-    {children}
-  </ExpensesContext.Provider>
+  return (
+    <ExpensesContext.Provider value={value}>
+      {children}
+    </ExpensesContext.Provider>
+  );
 }
 
 export default ExpensesContextProvider;
